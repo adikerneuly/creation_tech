@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Art de la création & la tech. Moderne</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #fff; color: #1a2a3f; line-height: 1.5; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+        header { background: rgba(255,255,255,0.96); backdrop-filter: blur(12px); box-shadow: 0 2px 15px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 100; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; flex-wrap: wrap; }
+        .logo { font-size: 1.5rem; font-weight: 700; font-family: 'Playfair Display', serif; background: linear-gradient(135deg, #BC9A6C, #8B5E3C); -webkit-background-clip: text; background-clip: text; color: transparent; cursor: pointer; user-select: none; }
+        .logo i { color: #BC9A6C; margin-right: 8px; }
+        nav ul { display: flex; gap: 2rem; list-style: none; }
+        nav a { text-decoration: none; font-weight: 500; color: #2d3e50; transition: 0.2s; cursor: pointer; }
+        nav a:hover, nav a.active { color: #BC9A6C; }
+        .menu-toggle { display: none; font-size: 1.8rem; cursor: pointer; }
+        .page { display: none; animation: fadeIn 0.2s ease; }
+        .page.active-page { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .hero { background: linear-gradient(120deg, #f6f2ed 0%, #ede6df 100%); padding: 5rem 0; text-align: center; border-radius: 0 0 40px 40px; margin-bottom: 3rem; }
+        .hero h1 { font-size: 3rem; font-weight: 700; margin-bottom: 1rem; font-family: 'Playfair Display', serif; }
+        .btn { display: inline-block; padding: 0.8rem 2rem; border-radius: 40px; font-weight: 600; margin: 0.5rem; transition: 0.3s; border: none; cursor: pointer; font-family: inherit; }
+        .btn-primary { background: #1a2a3f; color: white; border: 1px solid #1a2a3f; }
+        .btn-primary:hover { background: #BC9A6C; border-color: #BC9A6C; }
+        .btn-outline { border: 1px solid #1a2a3f; color: #1a2a3f; background: transparent; }
+        .btn-outline:hover { background: #1a2a3f; color: white; }
+        .features-grid, .products-grid, .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin: 3rem 0; }
+        .feature-card, .product-card, .service-card { background: white; border-radius: 28px; padding: 1.8rem; box-shadow: 0 10px 20px rgba(0,0,0,0.02); border: 1px solid #f0ebe5; transition: transform 0.2s; }
+        .product-card:hover, .service-card:hover { transform: translateY(-6px); }
+        .product-card img, .service-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 20px; background: #f8f4f0; margin-bottom: 1rem; }
+        .price { font-weight: 700; font-size: 1.3rem; color: #BC9A6C; margin: 0.5rem 0; }
+        .page-header { background: #1a2a3f; color: white; padding: 3rem 0; text-align: center; margin-bottom: 2rem; }
+        .contact-form, .order-form { max-width: 700px; margin: 2rem auto; background: #fefcf9; padding: 2rem; border-radius: 32px; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        input, select, textarea { width: 100%; padding: 0.8rem 1rem; border-radius: 16px; border: 1px solid #ddd6ce; font-family: inherit; }
+        .feedback { text-align: center; margin-top: 1rem; font-weight: 500; }
+        footer { background: #0f1a24; color: #b9c7d4; padding: 2rem 0; margin-top: 4rem; text-align: center; }
+        .admin-panel { background: #f8f9fc; border-radius: 24px; padding: 2rem; margin: 2rem 0; }
+        .admin-tabs { display: flex; gap: 0.5rem; border-bottom: 2px solid #e2e8f0; margin-bottom: 2rem; flex-wrap: wrap; }
+        .admin-tab { padding: 0.75rem 1.5rem; background: none; border: none; font-weight: 600; cursor: pointer; border-radius: 40px; }
+        .admin-tab.active { background: #1a2a3f; color: white; }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 20px; overflow-x: auto; display: block; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        .btn-icon { background: none; border: none; cursor: pointer; margin: 0 5px; font-size: 1.2rem; }
+        .edit-btn { color: #2b6cb0; } .delete-btn { color: #e53e3e; }
+        .form-admin { background: white; padding: 1.5rem; border-radius: 20px; margin-bottom: 2rem; display: grid; gap: 1rem; grid-template-columns: 1fr 1fr; }
+        .form-admin input, .form-admin textarea { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 12px; }
+        .full-width { grid-column: span 2; }
+        .admin-toast { position: fixed; bottom: 20px; right: 20px; background: #1a2a3f; color: white; padding: 12px 20px; border-radius: 40px; font-size: 0.9rem; z-index: 1000; opacity: 0; transition: 0.3s; pointer-events: none; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; flex-direction: column; background: white; position: absolute; top: 70px; left: 0; width: 100%; padding: 1rem; gap: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.05); z-index: 99; }
+            nav ul.show { display: flex; }
+            .hero h1 { font-size: 2rem; }
+            .container { padding: 0 1.2rem; }
+            .form-admin { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="container header-container">
+        <div class="logo" id="site-logo"><i class="fas fa-palette"></i> <span id="logoText">Art de la création & la tech. Moderne</span></div>
+        <nav>
+            <ul>
+                <li><a data-page="accueil">Accueil</a></li>
+                <li><a data-page="creation">Création résine</a></li>
+                <li><a data-page="tech">Tech Moderne</a></li>
+                <li><a data-page="contact">Contact</a></li>
+                <li><a data-page="commande">Commande</a></li>
+                <!-- Pas de lien Admin visible -->
+            </ul>
+            <div class="menu-toggle"><i class="fas fa-bars"></i></div>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <!-- ACCUEIL -->
+    <div id="page-accueil" class="page active-page">
+        <div class="hero">
+            <div class="container">
+                <h1>L'élégance de la résine & l'innovation digitale</h1>
+                <p>Personnalisation d'excellence – Objets uniques et solutions tech sur mesure en Haïti</p>
+                <button class="btn btn-primary" data-page="creation">Découvrir nos créations</button>
+                <button class="btn btn-outline" data-page="tech">Services high-tech</button>
+            </div>
+        </div>
+        <div class="container">
+            <h2>Notre savoir-faire</h2>
+            <div class="features-grid">
+                <div class="feature-card"><i class="fas fa-gem"></i><h3>Résine artisanale</h3><p>Porte-clés, miroirs, supports téléphone – chaque pièce est unique.</p></div>
+                <div class="feature-card"><i class="fas fa-laptop-code"></i><h3>Tech Moderne</h3><p>Création de sites e-commerce, bases de données, logos, dépannage.</p></div>
+                <div class="feature-card"><i class="fas fa-credit-card"></i><h3>Paiement en gourdes</h3><p>Tous nos prix sont affichés en HTG.</p></div>
+            </div>
+            <h2>Produits emblématiques</h2>
+            <div class="products-grid" id="preview-products-list"></div>
+        </div>
+    </div>
+
+    <!-- CRÉATION RÉSINE -->
+    <div id="page-creation" class="page">
+        <div class="page-header"><div class="container"><h1>Créations en résine</h1><p>Pièces uniques, entièrement personnalisables</p></div></div>
+        <div class="container"><div class="products-grid" id="products-list"></div></div>
+    </div>
+
+    <!-- TECH MODERNE -->
+    <div id="page-tech" class="page">
+        <div class="page-header"><div class="container"><h1>Services Tech Moderne</h1><p>Solutions digitales complètes</p></div></div>
+        <div class="container"><div class="services-grid" id="services-list"></div></div>
+    </div>
+
+    <!-- CONTACT -->
+    <div id="page-contact" class="page">
+        <div class="page-header"><div class="container"><h1>Nous contacter</h1></div></div>
+        <div class="container">
+            <form id="contactForm" class="contact-form">
+                <div class="form-group"><label>Nom complet</label><input type="text" id="contactName" required></div>
+                <div class="form-group"><label>Email</label><input type="email" id="contactEmail" required></div>
+                <div class="form-group"><label>Message</label><textarea id="contactMessage" rows="5" required></textarea></div>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+                <div id="contactFeedback" class="feedback"></div>
+            </form>
+        </div>
+    </div>
+ <!-- COMMANDE -->
+    <div id="page-commande" class="page">
+        <div class="page-header"><div class="container"><h1>Formulaire de commande</h1></div></div>
+        <div class="container">
+            <form id="orderForm" class="order-form">
+                <div class="form-group"><label>Type</label><select id="orderType"><option value="product">Produit résine</option><option value="service">Service Tech</option></select></div>
+                <div class="form-group"><label>Article</label><select id="orderItemSelect"></select></div>
+                <div class="form-group"><label>Nom complet</label><input type="text" id="orderName" required></div>
+                <div class="form-group"><label>Téléphone</label><input type="tel" id="orderPhone" required></div>
+                <div class="form-group"><label>Email</label><input type="email" id="orderEmail" required></div>
+                <div class="form-group"><label>Adresse</label><textarea id="orderAddress" rows="2" required></textarea></div>
+                <button type="submit" class="btn btn-primary">Valider commande</button>
+                <div id="orderFeedback" class="feedback"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- PAGE ADMIN (cachée) -->
+    <div id="page-admin" class="page">
+        <div class="page-header"><div class="container"><h1>Administration</h1></div></div>
+        <div class="container">
+            <div id="adminAuth" style="text-align:center; padding:2rem;">
+                <h2>Accès sécurisé</h2>
+                <input type="password" id="adminPassword" placeholder="Mot de passe" style="max-width:300px; margin:1rem auto;">
+                <button id="loginAdminBtn" class="btn btn-primary">Se connecter</button>
+                <div id="authError" style="color:red; margin-top:1rem;"></div>
+            </div>
+            <div id="adminContent" style="display:none;">
+                <div class="admin-panel">
+                    <div class="admin-tabs">
+                        <button class="admin-tab active" data-tab="products">Produits Résine</button>
+                        <button class="admin-tab" data-tab="services">Services Tech</button>
+                        <button class="admin-tab" data-tab="orders">Commandes</button>
+                        <button class="admin-tab" data-tab="contacts">Messages</button>
+                        <button class="admin-tab" data-tab="stats">Statistiques</button>
+                        <button class="admin-tab" data-tab="settings">Configuration</button>
+                    </div>
+                    <div id="tab-products" class="admin-section active">
+                        <h3>Produits (création résine)</h3>
+                        <div class="form-admin">
+                            <input type="text" id="prodName" placeholder="Nom du produit">
+                            <input type="number" id="prodPrice" placeholder="Prix (HTG)">
+                            <textarea id="prodDesc" placeholder="Description (auto si vide)" rows="2"></textarea>
+                            <input type="file" id="prodImage" accept="image/*">
+                            <button id="addProductBtn" class="btn btn-primary">Ajouter produit</button>
+                            <button id="cancelProductBtn" class="btn btn-outline" style="display:none;">Annuler</button>
+                            <input type="hidden" id="editProductId">
+                        </div>
+                        <table id="productsTable"><thead><tr><th>Image</th><th>Nom</th><th>Prix</th><th>Description</th><th>Actions</th></tr></thead><tbody></tbody></table>
+                    </div>
+                    <div id="tab-services" class="admin-section">
+                        <h3>Services Tech</h3>
+                        <div class="form-admin">
+                            <input type="text" id="servName" placeholder="Nom du service">
+                            <input type="number" id="servPrice" placeholder="Prix (HTG)">
+                            <textarea id="servDesc" placeholder="Description" rows="2"></textarea>
+                            <input type="file" id="servImage" accept="image/*">
+                            <button id="addServiceBtn" class="btn btn-primary">Ajouter service</button>
+                            <button id="cancelServiceBtn" class="btn btn-outline" style="display:none;">Annuler</button>
+                            <input type="hidden" id="editServiceId">
+                        </div>
+                        <table id="servicesTable"><thead><tr><th>Image</th><th>Nom</th><th>Prix</th><th>Description</th><th>Actions</th></tr></thead><tbody></tbody></table>
+                    </div>
+                    <div id="tab-orders" class="admin-section"><h3>Commandes</h3><table id="ordersTable"><thead><tr><th>Date</th><th>Article</th><th>Client</th><th>Email</th><th>Téléphone</th><th>Adresse</th></tr></thead><tbody></tbody></table></div>
+                    <div id="tab-contacts" class="admin-section"><h3>Messages</h3><table id="contactsTable"><thead><tr><th>Date</th><th>Nom</th><th>Email</th><th>Message</th></tr></thead><tbody></tbody></tr></div>
+                    <div id="tab-stats" class="admin-section"><h3>Statistiques</h3><table><thead><tr><th>Indicateur</th><th>Valeur</th></tr></thead><tbody><tr><td>Visites Accueil</td><td id="statHome">0</td></tr><tr><td>Visites Création</td><td id="statCreation">0</td></tr><tr><td>Visites Tech</td><td id="statTech">0</td></tr><tr><td>Total commandes</td><td id="statOrders">0</td></tr><tr><td>Messages reçus</td><td id="statContacts">0</td></tr></tbody></table></div>
+                    <div id="tab-settings" class="admin-section"><h3>Personnalisation</h3><label>Texte du logo :</label><input type="text" id="logoTextInput" style="width:100%; margin-bottom:1rem;"><button id="updateLogoBtn" class="btn btn-primary">Mettre à jour le logo</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer><div class="container"><p>© 2025 Art de la création & la tech. Moderne – Tous droits réservés 🇭🇹</p></div></footer>
+<div id="toastMsg" class="admin-toast"></div>
+
+<script>
+    (function() {
+        // ---------- CONSTANTES ----------
+        const STORAGE = {
+            PRODUCTS: 'artTech_products',
+            SERVICES: 'artTech_services',
+            ORDERS: 'artTech_orders',
+            CONTACTS: 'artTech_contacts',
+            STATS: 'artTech_stats',
+            LOGO: 'artTech_logo'
+        };
+
+        // ---------- INITIALISATION ----------
+        function initData() {
+            if (!localStorage.getItem(STORAGE.PRODUCTS)) {
+                localStorage.setItem(STORAGE.PRODUCTS, JSON.stringify([
+                    { id: 'p1', name: 'Porte-clé personnalisé', price: 450, description: 'Porte-clé en résine avec motif unique.', image: '' },
+                    { id: 'p2', name: 'Support téléphone/tablette', price: 850, description: 'Support ergonomique décoratif.', image: '' },
+                    { id: 'p3', name: 'Encadrement photo personnalisé', price: 1200, description: 'Cadre photo sur mesure résine.', image: '' },
+                    { id: 'p4', name: 'Marque-page personnalisé', price: 250, description: 'Élégant marque-page en résine.', image: '' },
+                    { id: 'p5', name: 'Cahier personnalisé', price: 700, description: 'Cahier reliure artisanale.', image: '' },
+                    { id: 'p6', name: 'Stylo personnalisé', price: 390, description: 'Stylo résine premium.', image: '' },
+                    { id: 'p7', name: 'Carte mariage personnalisée', price: 180, description: 'Carte d’invitation en résine.', image: '' },
+                    { id: 'p8', name: 'Carte visite personnalisée', price: 220, description: 'Cartes de visite relief résine.', image: '' },
+                    { id: 'p9', name: 'Poche téléphone personnalisée', price: 590, description: 'Pochette souple ornée de résine.', image: '' },
+                    { id: 'p10', name: 'Miroir personnalisé', price: 1500, description: 'Miroir décoratif bordure résine.', image: '' }
+                ]));
+            }
+            if (!localStorage.getItem(STORAGE.SERVICES)) {
+                localStorage.setItem(STORAGE.SERVICES, JSON.stringify([
+                    { id: 's1', name: 'Création site e-commerce', price: 35000, description: 'Site vitrine & boutique professionnelle.', image: '' },
+                    { id: 's2', name: 'Conception base de données', price: 18500, description: 'Modélisation, optimisation SQL.', image: '' },
+                    { id: 's3', name: 'Création logo', price: 4500, description: 'Design unique.', image: '' },
+                    { id: 's4', name: 'Installation OS', price: 3000, description: 'Windows/Linux + logiciels.', image: '' },
+                    { id: 's5', name: 'Dépannage informatique', price: 2000, description: 'Hardware, software, virus.', image: '' },
+                    { id: 's6', name: 'Flyers / supports print', price: 1500, description: 'Design flyer, carte.', image: '' },
+                    { id: 's7', name: 'Formulaire en ligne', price: 5000, description: 'Formulaires dynamiques.', image: '' },
+                    { id: 's8', name: 'Carte mariage numérique', price: 3200, description: 'Carte invitation interactive.', image: '' },
+                    { id: 's9', name: 'Carte de visite NFC', price: 2800, description: 'Carte moderne avec puce NFC.', image: '' }
+                ]));
+            }
+            if (!localStorage.getItem(STORAGE.ORDERS)) localStorage.setItem(STORAGE.ORDERS, '[]');
+            if (!localStorage.getItem(STORAGE.CONTACTS)) localStorage.setItem(STORAGE.CONTACTS, '[]');
+            if (!localStorage.getItem(STORAGE.STATS)) localStorage.setItem(STORAGE.STATS, JSON.stringify({ visits: { accueil: 0, creation: 0, tech: 0 } }));
+            if (!localStorage.getItem(STORAGE.LOGO)) localStorage.setItem(STORAGE.LOGO, "Art de la création & la tech. Moderne");
+        }
+
+        function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
+        function updateLogo() { const logo = document.getElementById('logoText'); if(logo) logo.innerText = localStorage.getItem(STORAGE.LOGO); }
+        function recordVisit(page) { 
+            try {
+                let stats = JSON.parse(localStorage.getItem(STORAGE.STATS)); 
+                stats.visits[page] = (stats.visits[page] || 0) + 1; 
+                localStorage.setItem(STORAGE.STATS, JSON.stringify(stats));
+            } catch(e) { console.warn(e); }
+        }
+        function showToast(msg, duration=2000) { 
+            const toast = document.getElementById('toastMsg'); 
+            if(toast) { toast.innerText = msg; toast.style.opacity = '1'; setTimeout(() => { toast.style.opacity = '0'; }, duration); }
+        }
+
+        // Navigation
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+            const target = document.getElementById(`page-${pageId}`);
+            if (target) target.classList.add('active-page');
+            document.querySelectorAll('nav a').forEach(link => {
+                if (link.dataset.page === pageId) link.classList.add('active');
+                else link.classList.remove('active');
+            });
+            if (pageId !== 'admin') recordVisit(pageId);
+            if (pageId === 'creation') renderProducts();
+            if (pageId === 'tech') renderServices();
+            if (pageId === 'accueil') renderPreview();
+            if (pageId === 'commande') populateOrderSelect();
+        }
+
+        // Rendu produits
+        function renderProducts() {
+            const products = JSON.parse(localStorage.getItem(STORAGE.PRODUCTS));
+            const container = document.getElementById('products-list');
+            if (!container) return;
+            container.innerHTML = products.map(p => `
+                <div class="product-card">
+                    <img src="${p.image || 'https://placehold.co/400x300?text=Résine'}" alt="${escapeHtml(p.name)}">
+                    <h3>${escapeHtml(p.name)}</h3>
+                    <p>${escapeHtml(p.description)}</p>
+                    <div class="price">${p.price} HTG</div>
+                    <button class="btn btn-primary commander-btn" data-type="product" data-id="${p.id}">Commander</button>
+                </div>
+            `).join('');
+            attachCommanderButtons();
+        }
+
+        function renderServices() {
+            const services = JSON.parse(localStorage.getItem(STORAGE.SERVICES));
+            const container = document.getElementById('services-list');
+            if (!container) return;
+            container.innerHTML = services.map(s => `
+                <div class="service-card">
+                    <img src="${s.image || 'https://placehold.co/400x300?text=Tech'}" alt="${escapeHtml(s.name)}">
+                    <h3>${escapeHtml(s.name)}</h3>
+                    <p>${escapeHtml(s.description)}</p>
+                    <div class="price">${s.price} HTG</div>
+                    <button class="btn btn-primary commander-btn" data-type="service" data-id="${s.id}">Demander</button>
+                </div>
+            `).join('');
+            attachCommanderButtons();
+        }
+
+        function renderPreview() {
+            const products = JSON.parse(localStorage.getItem(STORAGE.PRODUCTS));
+            const container = document.getElementById('preview-products-list');
+            if (!container) return;
+            container.innerHTML = products.slice(0, 3).map(p => `
+                <div class="product-card">
+                    <img src="${p.image || 'https://placehold.co/400x300'}" alt="${escapeHtml(p.name)}">
+                    <h3>${escapeHtml(p.name)}</h3>
+                    <p>${escapeHtml(p.description.substring(0, 80))}...</p>
+                    <div class="price">${p.price} HTG</div>
+                    <button class="btn btn-outline commander-btn" data-type="product" data-id="${p.id}">Commander</button>
+                </div>
+            `).join('');
+            attachCommanderButtons();
+        }
+
+        function attachCommanderButtons() {
+            document.querySelectorAll('.commander-btn').forEach(btn => {
+                btn.removeEventListener('click', handleCommanderClick);
+                btn.addEventListener('click', handleCommanderClick);
+            });
+        }
+        function handleCommanderClick(e) {
+            const btn = e.currentTarget;
+            localStorage.setItem('temp_order_type', btn.dataset.type);
+            localStorage.setItem('temp_order_id', btn.dataset.id);
+            navigateTo('commande');
+        }
+
+        function populateOrderSelect() {
+            const type = document.getElementById('orderType')?.value;
+            const select = document.getElementById('orderItemSelect');
+            if (!select) return;
+            let items = type === 'product' ? JSON.parse(localStorage.getItem(STORAGE.PRODUCTS)) : JSON.parse(localStorage.getItem(STORAGE.SERVICES));
+            select.innerHTML = items.map(item => `<option value="${item.id}">${escapeHtml(item.name)} - ${item.price} HTG</option>`).join('');
+            const tempType = localStorage.getItem('temp_order_type');
+            const tempId = localStorage.getItem('temp_order_id');
+            if (tempType && tempId && document.getElementById('orderType').value === tempType) {
+                select.value = tempId;
+                localStorage.removeItem('temp_order_type');
+                localStorage.removeItem('temp_order_id');
+            }
+        }
+
+   // ---------- ADMIN ----------
+        let currentEditProduct = null, currentEditService = null;
+        function resetProductForm() {
+            document.getElementById('prodName').value = '';
+            document.getElementById('prodPrice').value = '';
+            document.getElementById('prodDesc').value = '';
+            document.getElementById('prodImage').value = '';
+            document.getElementById('editProductId').value = '';
+            document.getElementById('addProductBtn').innerText = 'Ajouter produit';
+            document.getElementById('cancelProductBtn').style.display = 'none';
+            currentEditProduct = null;
+        }
+        function resetServiceForm() {
+            document.getElementById('servName').value = '';
+            document.getElementById('servPrice').value = '';
+            document.getElementById('servDesc').value = '';
+            document.getElementById('servImage').value = '';
+            document.getElementById('editServiceId').value = '';
+            document.getElementById('addServiceBtn').innerText = 'Ajouter service';
+            document.getElementById('cancelServiceBtn').style.display = 'none';
+            currentEditService = null;
+        }
+        function loadAdminProducts() {
+            const products = JSON.parse(localStorage.getItem(STORAGE.PRODUCTS));
+            const tbody = document.querySelector('#productsTable tbody');
+            if (!tbody) return;
+            tbody.innerHTML = products.map(p => `
+                <tr>
+                    <td><img src="${p.image || 'https://placehold.co/40'}" width="40" style="border-radius:8px;"></td>
+                    <td>${escapeHtml(p.name)}</td>
+                    <td>${p.price}</td>
+                    <td>${escapeHtml(p.description.substring(0, 50))}</td>
+                    <td><button class="btn-icon edit-product" data-id="${p.id}"><i class="fas fa-edit"></i></button> <button class="btn-icon delete-product" data-id="${p.id}"><i class="fas fa-trash"></i></button></td>
+                </tr>
+            `).join('');
+            document.querySelectorAll('.edit-product').forEach(btn => btn.addEventListener('click', () => editProduct(btn.dataset.id)));
+            document.querySelectorAll('.delete-product').forEach(btn => btn.addEventListener('click', () => deleteProduct(btn.dataset.id)));
+        }
+        function editProduct(id) {
+            const p = JSON.parse(localStorage.getItem(STORAGE.PRODUCTS)).find(prod => prod.id === id);
+            if (p) {
+                document.getElementById('prodName').value = p.name;
+                document.getElementById('prodPrice').value = p.price;
+                document.getElementById('prodDesc').value = p.description;
+                document.getElementById('editProductId').value = id;
+                document.getElementById('addProductBtn').innerText = 'Modifier produit';
+                document.getElementById('cancelProductBtn').style.display = 'inline-block';
+                currentEditProduct = id;
+            }
+        }
+        function deleteProduct(id) {
+            if (confirm('Supprimer ce produit ?')) {
+                let products = JSON.parse(localStorage.getItem(STORAGE.PRODUCTS));
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem(STORAGE.PRODUCTS, JSON.stringify(products));
+                loadAdminProducts(); renderProducts(); renderPreview();
+                showToast('Produit supprimé');
+            }
+        }
+        function saveProduct() {
+            const name = document.getElementById('prodName').value.trim();
+            if (!name) { alert('Veuillez entrer un nom'); return; }
+            const price = parseFloat(document.getElementById('prodPrice').value);
+            if (isNaN(price)) { alert('Prix invalide'); return; }
+            let desc = document.getElementById('prodDesc').value.trim();
+            if (!desc) desc = `Produit "${name}" – Création artisanale en résine personnalisable.`;
+            const imageFile = document.getElementById('prodImage').files[0];
+            const editId = document.getElementById('editProductId').value;
+            const save = (imgBase64) => {
+                let products = JSON.parse(localStorage.getItem(STORAGE.PRODUCTS));
+                if (editId) {
+                    const idx = products.findIndex(p => p.id === editId);
+                    if (idx !== -1) products[idx] = { ...products[idx], name, price, description: desc, image: imgBase64 || products[idx].image };
+                    showToast('Produit modifié');
+                } else {
+                    products.push({ id: 'p' + Date.now(), name, price, description: desc, image: imgBase64 || '' });
+                    showToast('Produit ajouté');
+                }
+                localStorage.setItem(STORAGE.PRODUCTS, JSON.stringify(products));
+                loadAdminProducts(); renderProducts(); renderPreview();
+                resetProductForm();
+            };
+            if (imageFile) { const reader = new FileReader(); reader.onload = e => save(e.target.result); reader.readAsDataURL(imageFile); }
+            else save('');
+        }
+        function loadAdminServices() {
+            const services = JSON.parse(localStorage.getItem(STORAGE.SERVICES));
+            const tbody = document.querySelector('#servicesTable tbody');
+            if (!tbody) return;
+            tbody.innerHTML = services.map(s => `
+                <tr>
+                    <td><img src="${s.image || 'https://placehold.co/40'}" width="40"></td>
+                    <td>${escapeHtml(s.name)}</td>
+                    <td>${s.price}</td>
+                    <td>${escapeHtml(s.description.substring(0, 50))}</td>
+                    <td><button class="edit-service" data-id="${s.id}"><i class="fas fa-edit"></i></button> <button class="delete-service" data-id="${s.id}"><i class="fas fa-trash"></i></button></td>
+                </tr>
+            `).join('');
+            document.querySelectorAll('.edit-service').forEach(btn => btn.addEventListener('click', () => editService(btn.dataset.id)));
+            document.querySelectorAll('.delete-service').forEach(btn => btn.addEventListener('click', () => deleteService(btn.dataset.id)));
+        }
+        function editService(id) {
+            const s = JSON.parse(localStorage.getItem(STORAGE.SERVICES)).find(serv => serv.id === id);
+            if (s) {
+                document.getElementById('servName').value = s.name;
+                document.getElementById('servPrice').value = s.price;
+                document.getElementById('servDesc').value = s.description;
+                document.getElementById('editServiceId').value = id;
+                document.getElementById('addServiceBtn').innerText = 'Modifier service';
+                document.getElementById('cancelServiceBtn').style.display = 'inline-block';
+                currentEditService = id;
+            }
+        }
+        function deleteService(id) {
+            if (confirm('Supprimer ce service ?')) {
+                let services = JSON.parse(localStorage.getItem(STORAGE.SERVICES));
+                services = services.filter(s => s.id !== id);
+                localStorage.setItem(STORAGE.SERVICES, JSON.stringify(services));
+                loadAdminServices(); renderServices();
+                showToast('Service supprimé');
+            }
+        }
+        function saveService() {
+            const name = document.getElementById('servName').value.trim();
+            if (!name) { alert('Veuillez entrer un nom'); return; }
+            const price = parseFloat(document.getElementById('servPrice').value);
+            if (isNaN(price)) { alert('Prix invalide'); return; }
+            let desc = document.getElementById('servDesc').value.trim();
+            if (!desc) desc = `Service "${name}" – Prestation professionnelle de qualité.`;
+            const imgFile = document.getElementById('servImage').files[0];
+            const editId = document.getElementById('editServiceId').value;
+            const save = (imgBase64) => {
+                let services = JSON.parse(localStorage.getItem(STORAGE.SERVICES));
+                if (editId) {
+                    const idx = services.findIndex(s => s.id === editId);
+                    if (idx !== -1) services[idx] = { ...services[idx], name, price, description: desc, image: imgBase64 || services[idx].image };
+                    showToast('Service modifié');
+                } else {
+                    services.push({ id: 's' + Date.now(), name, price, description: desc, image: imgBase64 || '' });
+                    showToast('Service ajouté');
+                }
+                localStorage.setItem(STORAGE.SERVICES, JSON.stringify(services));
+                loadAdminServices(); renderServices();
+                resetServiceForm();
+            };
+            if (imgFile) { const reader = new FileReader(); reader.onload = e => save(e.target.result); reader.readAsDataURL(imgFile); }
+            else save('');
+        }
+        function loadOrdersContactsStats() {
+            const orders = JSON.parse(localStorage.getItem(STORAGE.ORDERS));
+            const ordersTbody = document.querySelector('#ordersTable tbody');
+            if (ordersTbody) ordersTbody.innerHTML = orders.slice().reverse().map(o => `<tr><td>${new Date(o.date).toLocaleDateString()}</td><td>${escapeHtml(o.itemName)}</td><td>${escapeHtml(o.name)}</td><td>${escapeHtml(o.email)}</td><td>${escapeHtml(o.phone)}</td><td>${escapeHtml(o.address)}</td></tr>`).join('');
+            const contacts = JSON.parse(localStorage.getItem(STORAGE.CONTACTS));
+            const contactsTbody = document.querySelector('#contactsTable tbody');
+            if (contactsTbody) contactsTbody.innerHTML = contacts.slice().reverse().map(c => `<tr><td>${new Date(c.date).toLocaleDateString()}</td><td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.email)}</td><td>${escapeHtml(c.message)}</td></tr>`).join('');
+            const stats = JSON.parse(localStorage.getItem(STORAGE.STATS));
+            document.getElementById('statHome') && (document.getElementById('statHome').innerText = stats.visits?.accueil || 0);
+            document.getElementById('statCreation') && (document.getElementById('statCreation').innerText = stats.visits?.creation || 0);
+            document.getElementById('statTech') && (document.getElementById('statTech').innerText = stats.visits?.tech || 0);
+            document.getElementById('statOrders') && (document.getElementById('statOrders').innerText = orders.length);
+            document.getElementById('statContacts') && (document.getElementById('statContacts').innerText = contacts.length);
+        }
+
+        // ---------- ÉVÉNEMENTS PRINCIPAUX ----------
+        document.addEventListener('DOMContentLoaded', function() {
+            initData();
+            updateLogo();
+            // Navigation standard
+            document.querySelectorAll('nav a, [data-page]:not(.commander-btn)').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = el.dataset.page;
+                    if (page) navigateTo(page);
+                });
+            });
+            // Menu mobile
+            const toggle = document.querySelector('.menu-toggle');
+            if (toggle) {
+                toggle.addEventListener('click', () => {
+                    document.querySelector('nav ul').classList.toggle('show');
+                });
+            }
+            // Contact form
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const contacts = JSON.parse(localStorage.getItem(STORAGE.CONTACTS));
+                    contacts.push({ id: Date.now(), name: document.getElementById('contactName').value, email: document.getElementById('contactEmail').value, message: document.getElementById('contactMessage').value, date: new Date().toISOString() });
+                    localStorage.setItem(STORAGE.CONTACTS, JSON.stringify(contacts));
+                    document.getElementById('contactFeedback').innerHTML = '<p style="color:green;">✅ Message envoyé !</p>';
+                    e.target.reset();
+                    setTimeout(() => { if(document.getElementById('contactFeedback')) document.getElementById('contactFeedback').innerHTML = ''; }, 3000);
+                });
+            }
+// Order form
+            const orderForm = document.getElementById('orderForm');
+            if (orderForm) {
+                orderForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const type = document.getElementById('orderType').value;
+                    const selectedId = document.getElementById('orderItemSelect').value;
+                    let itemName = '';
+                    if (type === 'product') itemName = JSON.parse(localStorage.getItem(STORAGE.PRODUCTS)).find(p => p.id === selectedId)?.name || '';
+                    else itemName = JSON.parse(localStorage.getItem(STORAGE.SERVICES)).find(s => s.id === selectedId)?.name || '';
+                    const orders = JSON.parse(localStorage.getItem(STORAGE.ORDERS));
+                    orders.push({ id: Date.now(), type, itemId: selectedId, itemName, name: document.getElementById('orderName').value, phone: document.getElementById('orderPhone').value, email: document.getElementById('orderEmail').value, address: document.getElementById('orderAddress').value, date: new Date().toISOString() });
+                    localStorage.setItem(STORAGE.ORDERS, JSON.stringify(orders));
+                    document.getElementById('orderFeedback').innerHTML = '<p style="color:green;">✅ Commande enregistrée !</p>';
+                    e.target.reset();
+                    populateOrderSelect();
+                    setTimeout(() => { if(document.getElementById('orderFeedback')) document.getElementById('orderFeedback').innerHTML = ''; }, 3000);
+                });
+                document.getElementById('orderType').addEventListener('change', populateOrderSelect);
+            }
+            // Admin login
+            const loginBtn = document.getElementById('loginAdminBtn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', () => {
+                    const pwd = document.getElementById('adminPassword').value;
+                    if (pwd === 'admin2025') {
+                        document.getElementById('adminAuth').style.display = 'none';
+                        document.getElementById('adminContent').style.display = 'block';
+                        loadAdminProducts(); loadAdminServices(); loadOrdersContactsStats();
+                        document.getElementById('logoTextInput').value = localStorage.getItem(STORAGE.LOGO);
+                        showToast('Connexion admin réussie');
+                    } else {
+                        document.getElementById('authError').innerText = '⛔ Mot de passe incorrect';
+                    }
+                });
+            }
+            // Admin product actions
+            const addProduct = document.getElementById('addProductBtn');
+            if (addProduct) addProduct.addEventListener('click', saveProduct);
+            const cancelProduct = document.getElementById('cancelProductBtn');
+            if (cancelProduct) cancelProduct.addEventListener('click', resetProductForm);
+            const addService = document.getElementById('addServiceBtn');
+            if (addService) addService.addEventListener('click', saveService);
+            const cancelService = document.getElementById('cancelServiceBtn');
+            if (cancelService) cancelService.addEventListener('click', resetServiceForm);
+            const updateLogoBtn = document.getElementById('updateLogoBtn');
+            if (updateLogoBtn) {
+                updateLogoBtn.addEventListener('click', () => {
+                    localStorage.setItem(STORAGE.LOGO, document.getElementById('logoTextInput').value);
+                    updateLogo();
+                    showToast('Logo mis à jour');
+                });
+            }
+            // Admin tabs
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active'));
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    if (tabId === 'orders' || tabId === 'contacts' || tabId === 'stats') loadOrdersContactsStats();
+                });
+            });
+            // --- ACCÈS CACHÉ À L'ADMIN : 5 clics rapides sur le logo ---
+            let clickCount = 0;
+            let clickTimer = null;
+            const logoElement = document.getElementById('site-logo');
+            if (logoElement) {
+                logoElement.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    clickCount++;
+                    // Réinitialiser le timer après chaque clic
+                    if (clickTimer) clearTimeout(clickTimer);
+                    clickTimer = setTimeout(() => {
+                        clickCount = 0;
+                    }, 800);
+                    if (clickCount === 5) {
+                        clickCount = 0;
+                        if (clickTimer) clearTimeout(clickTimer);
+                        navigateTo('admin');
+                        showToast('🔐 Accès administrateur activé', 1500);
+                    }
+                });
+            } else {
+                console.warn("Logo non trouvé");
+            }
+            // Démarrer sur accueil
+            navigateTo('accueil');
+        });
+    })();
+</script>
+</body>
+</html>
